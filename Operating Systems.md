@@ -45,18 +45,19 @@ _프로세스 관리_
 
 ### 컴퓨터 시스템 구조
 
-![컴퓨터 시스템 구조](https://user-images.githubusercontent.com/76620786/153706741-e8c76d48-c99b-40a4-94e6-7b6d25a02a01.png)
+![컴퓨터 시스템 구조](https://user-images.githubusercontent.com/76620786/153706741-e8c76d48-c99b-40a4-94e6-7b6d25a02a01.png)  
 timer는 특정프로그램이 cpu를 독점하는 것을 막기 위함, time sharing을 구현하기 위해 이용, 현재 시간을 계산하기 위함  
-Mode bit의 역할 : 사용자 프로그램은 나쁜 짓을 할 수 있기 때문에 다른 프로그램이나 운영체제에 피해가 가지 않도록 보호하는 장치
+Mode bit의 역할 : 사용자 프로그램은 나쁜 짓을 할 수 있기 때문에 다른 프로그램이나 운영체제에 피해가 가지 않도록 보호하는 장치  
 Mode bit
 
 - 0 (커널 모드) : OS 코드 수행
 - 1 (사용자 모드) : 사용자 프로그램 수행  
    보안을 해칠 수 있는 중요한 명령어는 모니터 모드에서만 수행가능한 **특권명령**으로 규정
   Interrupt나 Exception 발생시 하드웨어가 mode bit을 0으로 바꿈  
-   사용자 프로그램에게 CPU를 넘기기 전에 mode bit을 1로 세팅  
-  Direct Memory Access (DMA) controller : IO장치가 interrupt를 많이 하게 되면 CPU가 효율적으로 일을 못하니까 local buffer에 있는 작업이 끝나면 그 내용을 직접 메모리에 복사해서 CPU에 interrupt를 한번만 걸게 해서 CPU를 효율적으로 일하게 해줌  
-  Device Controller : IO장치의 일종의 작은 CPU -> hardware
+   사용자 프로그램에게 CPU를 넘기기 전에 mode bit을 1로 세팅
+
+Direct Memory Access (DMA) controller : IO장치가 interrupt를 많이 하게 되면 CPU가 효율적으로 일을 못하니까 local buffer에 있는 작업이 끝나면 그 내용을 직접 메모리에 복사해서 CPU에 interrupt를 한번만 걸게 해서 CPU를 효율적으로 일하게 해줌  
+Device Controller : IO장치의 일종의 작은 CPU -> hardware
 
 ### 인터럽트 (Interrupt)
 
@@ -75,6 +76,23 @@ Mode bit
 - 올바른 I/O요청인지 확인 후 I/O 수행
 - I/O 완료 시 제어권을 시스템콜 다음 명령으로 옮김
 
+### 동기식 입출력과 비동기식 입출력
+
+![Synchronous and Asynchronous I O](https://user-images.githubusercontent.com/76620786/153748135-13ab6ac9-1da0-49f8-8131-0e9d52525bf2.png)
+
+### 프로그램의 실행 (memory load)
+
+File system -> virtual memory -> address translation -> physical memory
+
+virtual memory
+
+- code => 커널 코드
+  - 시스템 콜, 인터럽트 처리 코드
+  - 자원 관리를 위한 코드
+  - 편리한 서비스 제공을 위한 코드
+- data
+- stack => 커널 스택
+
 ---
 
 ## 용어 정리
@@ -82,4 +100,5 @@ Mode bit
 Multiprocessor : 하나의 컴퓨터에 CPU(processor)가 여러 개 붙어 있음을 의미
 Device driver : OS코드 중 각 장치별 처리 루틴 -> software  
 인터럽트 벡터 : 해당 인터럽트의 처리 루틴 주소를 가지고 있음  
-인터럽트 처리 루틴 : 해당 인터럽트를 처리하는 커널 함수
+인터럽트 처리 루틴 : 해당 인터럽트를 처리하는 커널 함수  
+Caching: copying information into faster storage system
