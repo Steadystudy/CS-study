@@ -93,12 +93,32 @@ virtual memory
 - data
 - stack => 커널 스택
 
+## 프로세스
+
+프로세스의 문맥  
+ CPU 수행 상태를 나타내는 하드웨어 문맥  
+ 프로세스의 주소 공간(code, data, stack)  
+ 프로세스 관련 커널 자료 구조
+
+### 프로세스의 상태
+
+- Running : CPU를 잡고 instruction을 수행중인 상태
+- Ready : CPU를 기다리는 상태 (메모리 등 다른 조건을 모두 만족하고)
+- Blocked(wait, sleep) :
+  - CPU를 주어도 당장 instruction을 수행할 수 없는 상태
+  - 디스크에서 file을 읽어와야 하는 경우
+
+### 문맥 교환 (Context Switch)
+
+CPU를 한 프로세스에서 다른 프로세스로 넘겨주는 과정  
+시스템 콜이나 인터럽트 발생시 반드시 context switch가 일어나는 것은 아님
+
 ---
 
 ## 용어 정리
 
-Multiprocessor : 하나의 컴퓨터에 CPU(processor)가 여러 개 붙어 있음을 의미
-Device driver : OS코드 중 각 장치별 처리 루틴 -> software  
-인터럽트 벡터 : 해당 인터럽트의 처리 루틴 주소를 가지고 있음  
-인터럽트 처리 루틴 : 해당 인터럽트를 처리하는 커널 함수  
-Caching: copying information into faster storage system
+> Multiprocessor : 하나의 컴퓨터에 CPU(processor)가 여러 개 붙어 있음을 의미
+> Device driver : OS코드 중 각 장치별 처리 루틴 -> software  
+> 인터럽트 벡터 : 해당 인터럽트의 처리 루틴 주소를 가지고 있음  
+> 인터럽트 처리 루틴 : 해당 인터럽트를 처리하는 커널 함수  
+> Caching: copying information into faster storage system
