@@ -78,7 +78,19 @@ Device Controller : IO장치의 일종의 작은 CPU -> hardware
 
 ### 동기식 입출력과 비동기식 입출력
 
-![Synchronous and Asynchronous I O](https://user-images.githubusercontent.com/76620786/153748135-13ab6ac9-1da0-49f8-8131-0e9d52525bf2.png)
+![Synchronous and Asynchronous I O](https://user-images.githubusercontent.com/76620786/153748135-13ab6ac9-1da0-49f8-8131-0e9d52525bf2.png)  
+동기식 입출력
+
+1. 구현방법 1  
+   I/O가 끝날 때까지 CPU를 낭비시킴
+   매시점 하나의 I/O만 일어날 수 있음
+
+2. 구현방법 2
+   I/O가 완료될 때까지 해당 프로그램에게서 CPU를 빼앗음
+   다른 프로그램에게 CPU를 줌
+
+비동기식 입출력  
+ I/O가 시작된 후 입출력 작업이 끝나기를 기다리지 않고 제어가 사용자 프로그램에 즉시 넘어감
 
 ### 프로그램의 실행 (memory load)
 
@@ -107,11 +119,52 @@ virtual memory
 - Blocked(wait, sleep) :
   - CPU를 주어도 당장 instruction을 수행할 수 없는 상태
   - 디스크에서 file을 읽어와야 하는 경우
+- Suspended (stopped)
+  - 외부적인 이유로 프로세스의 수행이 정지된 상태
+
+> Blocked는 자신이 요청한 event가 만족되면 Ready  
+> Suspended는 외부에서 재개해 주어야 Active
 
 ### 문맥 교환 (Context Switch)
 
 CPU를 한 프로세스에서 다른 프로세스로 넘겨주는 과정  
 시스템 콜이나 인터럽트 발생시 반드시 context switch가 일어나는 것은 아님
+
+### 스케줄러 (Scheduler)
+
+1. 장기 스케줄러 (job scheduler)  
+   시작 프로세스 중 어떤 것들을 ready queue로 보낼지 결정  
+   프로세스에 memory를 주는 문제
+   time sharing system에는 보통 장기 스케줄러가 없음 (무조건 ready)
+
+2. 단기 스케줄러 (CPU scheduler)  
+   어떤 프로세스를 다음번에 running 시킬지 결정  
+   프로세스에 CPU를 주는 문제
+
+3. 중기 스케줄러 (Swapper)  
+   여유 공간 마련을 위해 프로세스를 통째로 메모리에서 디스크로 쫓아냄  
+   프로세스에게서 memory를 뺏는 문제
+
+### 스레드 (Thread)
+
+프로세스 하나에 CPU 수행단위만 여러개 두고 있는 것  
+스레드가 동료 스레드와 공유하는 부분
+
+- code section
+- data section
+- OS resources
+
+스레드가 별도로 가지고 있는 구성
+
+- program counter
+- register set
+- stack space
+
+> 스레드의 장점
+
+    - 다중 스레드로 구성된 태스크 구조에서는 하나의 서버 스레드가 blocked 상태인 동안에도 동일한 태스크 내의 다른 스레드가 실행되어 빠른 처리를 할 수 있다.
+    - 동일한 일을 수행하는 다중 스레드가 협력하여 높은 처리율과 성능 향상을 얻을 수 있다.
+    - 병렬성을 높일 수 있다.
 
 ---
 
