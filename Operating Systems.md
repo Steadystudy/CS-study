@@ -182,6 +182,28 @@ CPU를 한 프로세스에서 다른 프로세스로 넘겨주는 과정
 
 [COW란?](https://talkingaboutme.tistory.com/entry/Study-Copy-On-Write-COW)
 
+### 프로세스와 관련있는 시스템 콜
+
+fork() create a child(copy)  
+exit() frees all the resources, notify parent  
+exec() overlay new image  
+wait() sleep until child is done
+
+### 프로세스 간 협력 메커니즘(IPC)
+
+메시지를 전달하는 방법
+
+- message passing: 커널을 통해 메시지 전달
+  - message system : 프로세스 사이에 공유 변수를 일체 사용하지 않고 통신하는 시스템
+  - direct communication : 통신하려는 프로세스의 이름을 명시적으로 표시
+  - indirect communication : mailbox (or port)를 통해 메시지를 간접 전달
+
+주소 공간을 공유하는 방법
+
+- shared memory : 서로 다른 프로세스 간에도 일부 주소 공간을 공유하게 하는 shared memory 메커니즘이 있음
+
+> thread : thread는 사실상 하나의 프로세스이므로 프로세스 간 협력으로 보기는 어렵지만 동일한 process를 구성하는 thread들 간에는 주소 공간을 공유하므로 협력이 가능
+
 ---
 
 ## 용어 정리
