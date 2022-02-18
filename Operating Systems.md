@@ -204,6 +204,32 @@ wait() sleep until child is done
 
 > thread : thread는 사실상 하나의 프로세스이므로 프로세스 간 협력으로 보기는 어렵지만 동일한 process를 구성하는 thread들 간에는 주소 공간을 공유하므로 협력이 가능
 
+## CPU Scheduling
+
+CPU 스케줄링의 필요성  
+여러 종류의 job(=process)이 섞여 있기 때문 (특히 I/O burst)
+
+### CPU Scheduler & Dispatcher
+
+_CPU Scheduler_(\*독립적인 하드웨어가 아니라 운영체제 안에서 CPU 스케줄링을 하는 코드를 뜻함)  
+ Ready 상태의 프로세스 중에서 이번에 CPU를 줄 프로세스를 고른다.
+
+_Dispatcher_  
+ CPU의 제어권을 CPU scheduler에 의해 선택된 프로세스에게 넘긴다. (문맥 교환)
+
+### CPU Scheduling 성능 척도
+
+System 입장에서의 성능 척도
+
+- CPU utilization(이용률) : CPU가 놀지 않고 일한 시간 비율
+- Throughput(처리량) : 주어진 시간동안 몇개의 작업을 처리했는가
+
+고객 입장에서의 성능 척도
+
+- Turnaround time(소요시간) =>
+- Waiting time(대기 시간) => CPU를 쓰고자 하더라도 줄서서 기다린 시간
+- Response time(응답 시간) =>
+
 ---
 
 ## 용어 정리
@@ -213,3 +239,5 @@ wait() sleep until child is done
 > 인터럽트 벡터 : 해당 인터럽트의 처리 루틴 주소를 가지고 있음  
 > 인터럽트 처리 루틴 : 해당 인터럽트를 처리하는 커널 함수  
 > Caching: copying information into faster storage system
+> preemptive : 강제로 빼앗음
+> nonpreemptive : 강제로 뺴앗지 않고 자진 반납
