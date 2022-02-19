@@ -226,9 +226,44 @@ System 입장에서의 성능 척도
 
 고객 입장에서의 성능 척도
 
-- Turnaround time(소요시간) =>
-- Waiting time(대기 시간) => CPU를 쓰고자 하더라도 줄서서 기다린 시간
-- Response time(응답 시간) =>
+- Turnaround time(소요시간) => CPU를 쓰러 와서 다 쓰고 나갈때까지 걸린 시간
+- Waiting time(대기 시간) => CPU를 쓰고자 줄서서 기다린 시간
+- Response time(응답 시간) => 처음 CPU를 얻고자 기다린 시간
+
+**중국집 비유**
+중국집 사장입장에서  
+전체 시간중에서 주방장이 놀지 않고 일한 시간 = utilization  
+단위 시간당 손님이 얼마나 왔는가 = throughput
+
+고객 입장에서  
+밥을 다먹고 나가는 시간 = turnaround time  
+요리가 나오기 전 기다리는 총 시간 = waiting time  
+첫번째 요리를 기다리는 시간 = response time
+
+### SJF (Shortest-Job-First)
+
+CPU burst time이 가장 짧은 프로세스를 제일 먼저 스케쥴
+
+- Nonpreemptive
+  => 일단 CPU를 잡으면 이번 CPU burst가 완료될 때까지 CPU를 선점당하지 않음
+- Preemptive
+  => 현재 수행중인 프로세스와 남은 burst time보다 더 짧은 CPU burst time을 가지는 새로운 프로세스가 도착하면 CPU를 빼앗김
+
+### Priority Scheduling
+
+우선순위가 높은 프로세스에게 CPU 할당
+
+부작용 : 우선순위가 낮은 프로세스가 기다리는 시간이 길어서 CPU를 얻지 못할 수 있음.
+
+해결책 : Aging => 오래 기다리게 되면 우선순위를 높여줌
+
+### Round Robin
+
+각 프로세스는 동일한 크기와 할당 시간을 가짐
+
+장점: response time이 빨라짐
+
+특징: 할당시간이 길면 FCFS, 짧으면 context switch가 잦아짐.
 
 ---
 
