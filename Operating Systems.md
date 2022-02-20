@@ -259,11 +259,48 @@ CPU burst time이 가장 짧은 프로세스를 제일 먼저 스케쥴
 
 ### Round Robin
 
-각 프로세스는 동일한 크기와 할당 시간을 가짐
+각 프로세스는 동일한 크기와 할당 시간을 가짐  
+할당 시간이 지나면 프로세스는 선점당하고 ready queue의 제일 뒤에 가서 다시 줄을 선다.
 
 장점: response time이 빨라짐
 
 특징: 할당시간이 길면 FCFS, 짧으면 context switch가 잦아짐.
+
+### Multilevel Queue
+
+Ready queue를 여러 개로 분할  
+-foreground  
+-background
+
+큐에 대한 스케줄링이 필요  
+-fixed priority scheduling을 하면 우선순위가 높은 프로세스가 처리되고 다음 background에게 CPU를 줌  
+-time slice를 하면 각 큐에 CPU time을 적절한 비율로 할당 ex) 80& to foreground in RR, 20% to background in FCFS
+
+### Multilevel Feedback Queue
+
+프로세스가 다른 큐를 이동 가능 (Multilevel queue는 우선순위가 이미 정해져있음)
+
+scheduler를 정의하는 파라미터들  
+-queue의 수  
+-각 큐의 scheduling algorithm  
+-Process를 상위 큐로 보내는 기준  
+-Process를 하위 큐로 보내는 기준  
+-프로세스가 CPU 서비스를 받으려 할 때 들어갈 큐를 결정하는 기준
+
+예를 들면, 3개의 큐가 있다.  
+-Q0 : 8 milliseconds를 부여하는 큐  
+-Q1 : 16 milliseconds를 부여하는 큐  
+-Q2 : FCFS
+
+스케줄링
+
+1. new job이 Q0로 들어감
+2. CPU를 잡아서 할당 시간 8 milliseconds동안 수행함
+3. 8 milliseconds동안 다 끝내지 못했으면 Q1으로 내려감
+4. Q1에 줄서서 기다렸다가 CPU를 잡아서 16 milliseconds 동안 수행됨
+5. 16 milliseconds에 끝내지 못한 경우 Q2로 쫓겨남
+
+위로 갈수록 더 할당시간을 짧게 줌
 
 ---
 
