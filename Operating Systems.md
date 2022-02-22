@@ -332,6 +332,26 @@ scheduler를 정의하는 파라미터들
 
 n 개의 프로세스가 공유 데이터를 동시에 사용하기를 원하는 경우 각 프로세스의 code segment에는 *공유 데이터를 접근하는 코드*인 critical section이 존재
 
+### Deadlock
+
+둘 이상의 프로세스가 서로 상대방에 의해 충족될 수 있는 event를 무한히 기다리는 현상
+
+### Bounded-Buffer Problem (producer-consumer problem)
+
+버퍼의 크기가 유한한 환경에서 여러 개의 생산자 프로세스들과 여러 개의 소비자 프로세스들이 있다.
+
+생산자 입장에서
+
+1. Empty buffer가 있나요? (없으면 기다림)
+2. 공유 데이터에 lock을 건다
+3. Empty buffer에 데이터 입력 및 buffer 조작
+4. Lock을 푼다.
+5. Full buffer 하나 증가
+
+소비자 입장에서는 full buffer에서 데이터 꺼내고 조작한다. 그 외 과정은 생산자와 같다.
+
+shared data : buffer 자체 및 buffer 조작 변수(empty/full buffer의 시작 위치)
+
 ---
 
 ## 용어 정리
@@ -343,3 +363,4 @@ n 개의 프로세스가 공유 데이터를 동시에 사용하기를 원하는
 > Caching: copying information into faster storage system
 > preemptive : 강제로 빼앗음
 > nonpreemptive : 강제로 뺴앗지 않고 자진 반납
+> Starvation : indefinite blocking. 프로세스가 suspend된 이후에 해당하는 큐에서 빠져나갈 수 없는 현상.
