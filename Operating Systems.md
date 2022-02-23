@@ -338,9 +338,10 @@ n 개의 프로세스가 공유 데이터를 동시에 사용하기를 원하는
 
 ### Bounded-Buffer Problem (producer-consumer problem)
 
-버퍼의 크기가 유한한 환경에서 여러 개의 생산자 프로세스들과 여러 개의 소비자 프로세스들이 있다.
+버퍼의 크기가 유한한 환경에서 여러 개의 생산자 프로세스들과 여러 개의 소비자 프로세스들이 있다.  
+버퍼의 공간이 가득 차면 생산자는 더 이상 버퍼에 접근할 수 없고, 버퍼가 비어 있으면 소비자는 버퍼에 접근할 수 없다.
 
-생산자 입장에서
+생산자(데이터 생성) 입장에서
 
 1. Empty buffer가 있나요? (없으면 기다림)
 2. 공유 데이터에 lock을 건다
@@ -348,9 +349,29 @@ n 개의 프로세스가 공유 데이터를 동시에 사용하기를 원하는
 4. Lock을 푼다.
 5. Full buffer 하나 증가
 
-소비자 입장에서는 full buffer에서 데이터 꺼내고 조작한다. 그 외 과정은 생산자와 같다.
+소비자(데이터 소비) 입장에서는 full buffer에서 데이터 꺼내고 조작한다. 그 외 과정은 생산자와 같다.
 
 shared data : buffer 자체 및 buffer 조작 변수(empty/full buffer의 시작 위치)
+
+### Readers-Writers Problem
+
+- 한 process가 DB에 write 중일 때 다른 process가 접근하면 안됨
+- read는 동시에 여럿이 해도 됨
+  **Solution**
+- Writer가 DB에 접근 허가를 아직 얻지 못한 상태에서는 모든 대기중인 Reader들을 다 DB에 접근하게 해준다.
+- Writer는 대기 중인 Reader가 하나도 없을 때 DB접근이 허용된다.
+- 일단 Writer가 DB에 접근 중이면 Reader들은 접근이 금지된다.
+- Writer가 DB에서 빠져나가야만 Reader의 접근이 허용된다.
+
+* starvation이 일어날 수 있음. (ex. reader가 끝도 없이 올 때 writer는 무한 대기)
+
+shared data : DB자체, readcount(\*현재 DB에 접근 중인 Reader의 수)
+
+### Dining-Philosophers Problem
+
+식사하는 철학자 문제는 5명의 철학자가 식사를 하고 있는 상황을 가정한 문제
+
+> 프로세스 동기화 관련 아주 잘 작성되어 있는 블로그 : https://comdolidol-i.tistory.com/171?category=844795
 
 ---
 
