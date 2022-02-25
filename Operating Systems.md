@@ -418,6 +418,28 @@ Deadlock의 처리방법
 
 자원 요청에 대한 부가정보를 이용해서 자원 할당이 deadlock으로부터 안전한지를 동적으로 조사해서 안전한 경우에만 할당
 
+2가지 알고리즘을 통해 Deadlock Avoidance 구현
+
+1. Banker's Algorithm
+2. Resource Allocation Graph Algorithm
+
+### Deadlock Detection and recovery
+
+Detection
+
+- Resource type 당 single instance인 경우 => 자원할당 그래프에서의 cycle이 곧 deadlock을 의미
+- Resource type 당 multi instance인 경우 => Banker's Algorithm과 유사한 방법 사용
+
+Recovery
+
+- Process termination (프로세스를 종료)
+- Resource Premption (deadlock에 연루된 프로세스들을 하나씩 자원을 뺏음)
+
+### Deadlock Ignorance
+
+Deadlock이 매우 드물게 발생하므로 deadlock에 대한 조치 자체가 더 큰 overhead일 수 있음  
+만약, 시스템에 deadlock이 발생한 경우 시스템이 비정상적으로 작동하는 것을 사람이 느낀 후 직접 process를 죽이는 등의 방법으로 대처
+
 ---
 
 ## 용어 정리
