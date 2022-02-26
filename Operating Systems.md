@@ -440,6 +440,54 @@ Recovery
 Deadlock이 매우 드물게 발생하므로 deadlock에 대한 조치 자체가 더 큰 overhead일 수 있음  
 만약, 시스템에 deadlock이 발생한 경우 시스템이 비정상적으로 작동하는 것을 사람이 느낀 후 직접 process를 죽이는 등의 방법으로 대처
 
+## Memory Management
+
+- Logcial address : 프로세스마다 독립적으로 가지는 주소 공간, CPU가 보는 주소
+- Physical address : 메모리에 실제 올라가는 위치
+
+### 주소 바인딩 (Address Binding)
+
+Compile time binding
+
+- 물리적 메모리 주소가 컴파일 시 알려짐
+- 시작 위치 변경시 재컴파일
+- 컴파일러는 절대 코드 생성
+
+Load time binding
+
+- Loader의 책임하에 물리적 메모리 주소 부여
+- 컴파일러가 재배치가능코드를 생성한 경우 가능
+
+Execution time binding(=run time binding)
+
+- 수행이 시작된 이후에도 프로세스의 메모리 상 위치를 옮길 수 있음
+- CPU가 주소를 참조할 때마다 binding을 점검
+
+### Memory-Management Unit(MMU)
+
+logical address를 physical address로 매핑해 주는 Hardware device
+
+MMU scheme
+
+- 사용자 프로세스가 CPU에서 수행되며 생성해내는 모든 주소값에 대해 base register(=relocation register)의 값을 더한다.
+
+user program
+
+- logical address만을 다룬다, 실제 physical address를 볼 수 없으며 알 필요가 없다.
+
+### Dynamic Loading
+
+프로세스 전체를 메모리에 미리 다 올리는 것이 아니라 해당 루틴이 불려질 때 메모리에 load하는 것.  
+운영체제의 특별한 지원 없이 프로그램 자체에서 구현 가능
+
+### Overlays
+
+메모리에 프로세스의 부분 중 실제 필요한 정보만을 올림  
+운영체제의 지원없이 사용자에 의해 구현  
+프로세스 크기가 메모리보다 클 때 유용
+
+### Swapping
+
 ---
 
 ## 용어 정리
