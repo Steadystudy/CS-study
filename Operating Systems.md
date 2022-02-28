@@ -488,15 +488,61 @@ user program
 
 ### Swapping
 
+프로세스를 일시적으로 메모리에서 backing store로 쫓아내는 것
+
+Backing store(=swap area) 디스크 => 많은 사용자의 프로세스 이미지를 담을 만큼 충분히 빠르고 큰 저장 공간
+
+### Dynamic Linking
+
+Linking을 실행 시간까지 미루는 기법
+
+Static linking
+
+- 라이브러리가 프로그램의 실행 파일 코드에 포함됨
+- 실행 파일의 크기가 커짐
+- 동일한 라이브러리를 각각의 프로세스가 메모리에 올리므로 메모리 낭비
+
+Dynamic linking
+
+- 라이브러리가 실행시 연결됨
+- 라이브러리 호출 부분에 라이브러리 루틴의 위치를 찾기 위한 stub이라는 작은 코드를 둠
+- 라이브러리가 이미 메모리에 있으면 그 루틴의 주소로 가고 없으면 디스크에서 읽어옴
+- 운영체제의 도움이 필요
+
+### Allocation of Physical Memory
+
+메모리는 일반적으로 두 영역으로 나뉘어 사용
+
+- OS 상주 영역 => interrupt vector과 함께 낮은 주소 영역 사용
+- 사용자 프로세스 영역 => 높은 주소 영역 사용
+
+할당 방법
+
+1. Contiguous allocation : 각각의 프로세스가 메모리의 연속적인 공간에 적재되도록 하는 것
+2. Noncontiguous allocation : 하나의 프로세스가 메모리의 여러 영역에 분산되어 올라갈 수 있음
+
+### Contiguous allocation
+
+1. 고정분할 방식
+
+- 물리적 메모리를 몇 개의 영구적 분할로 나눔
+- 분할의 크기가 모두 동일한 방식과 서로 다른 방식이 존재
+- 융통성이 없음 => 동시에 메모리에 load되는 프로그램의 수가 고정됨, 최대 수행 가능 프로그램 크기 제한
+
+2. 가변분할 방식
+
+- 분할의 크기, 개수가 동적으로 변함
+- 프로그램의 크기를 고려해서 할당
+
 ---
 
 ## 용어 정리
 
-> Multiprocessor : 하나의 컴퓨터에 CPU(processor)가 여러 개 붙어 있음을 의미
+> Multiprocessor : 하나의 컴퓨터에 CPU(processor)가 여러 개 붙어 있음을 의미  
 > Device driver : OS코드 중 각 장치별 처리 루틴 -> software  
 > 인터럽트 벡터 : 해당 인터럽트의 처리 루틴 주소를 가지고 있음  
 > 인터럽트 처리 루틴 : 해당 인터럽트를 처리하는 커널 함수  
-> Caching: copying information into faster storage system
-> preemptive : 강제로 빼앗음
-> nonpreemptive : 강제로 뺴앗지 않고 자진 반납
+> Caching: copying information into faster storage system  
+> preemptive : 강제로 빼앗음  
+> nonpreemptive : 강제로 뺴앗지 않고 자진 반납  
 > Starvation : indefinite blocking. 프로세스가 suspend된 이후에 해당하는 큐에서 빠져나갈 수 없는 현상.
