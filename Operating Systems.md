@@ -442,10 +442,12 @@ Deadlock이 매우 드물게 발생하므로 deadlock에 대한 조치 자체가
 
 ## Memory Management
 
-- Logcial address : 프로세스마다 독립적으로 가지는 주소 공간, CPU가 보는 주소
+- Logcial address : 프로세스마다 독립적으로 가지는 주소 공간, _CPU가 보는 주소_
 - Physical address : 메모리에 실제 올라가는 위치
 
 ### 주소 바인딩 (Address Binding)
+
+> ![memory management](https://user-images.githubusercontent.com/76620786/156090903-7cb2dccb-dc69-4a29-a5bc-4ab60eece90f.png)
 
 Compile time binding
 
@@ -464,6 +466,8 @@ Execution time binding(=run time binding)
 - CPU가 주소를 참조할 때마다 binding을 점검
 
 ### Memory-Management Unit(MMU)
+
+![MMU](https://user-images.githubusercontent.com/76620786/156094021-327870f7-0ad6-4b71-89ad-dcdddaf56084.PNG)
 
 logical address를 physical address로 매핑해 주는 Hardware device
 
@@ -519,7 +523,7 @@ Dynamic linking
 할당 방법
 
 1. Contiguous allocation : 각각의 프로세스가 메모리의 연속적인 공간에 적재되도록 하는 것
-2. Noncontiguous allocation : 하나의 프로세스가 메모리의 여러 영역에 분산되어 올라갈 수 있음
+2. Noncontiguous allocation : 하나의 프로세스가 메모리의 여러 영역에 분산되어 올라갈 수 있음, _요즘 쓰는 할당_
 
 ### Contiguous allocation
 
@@ -533,6 +537,29 @@ Dynamic linking
 
 - 분할의 크기, 개수가 동적으로 변함
 - 프로그램의 크기를 고려해서 할당
+
+Hole
+
+- 가용 메모리 공간
+- 다양한 크기의 hole들이 메모리 여러 곳에 흩어져 있음
+- 프로세스가 도착하면 수용가능한 hole을 할당
+- 운영체제는 a) 할당 공간 b) 가용 공간(hole)로 정보를 유지
+
+Dynamic Storage-Allocation Problem : 가변 분할 방식에서 size n인 요청을 만족하는 가장 적절한 hole을 찾는 문제
+
+### Noncontiguous allocation
+
+1. Paging
+2. Segmentation
+3. Paged Segmentation
+
+### Paging
+
+Process의 virtual memory를 동일한 사이즈의 page 단위로 나눔  
+Virtual memory의 내용이 page 단위로 *noncontiguous*하게 저장됨  
+일부는 backing storage에, 일부는 physical memory에 저장
+
+> page Table
 
 ---
 
