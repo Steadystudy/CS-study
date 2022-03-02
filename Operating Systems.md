@@ -561,6 +561,46 @@ Virtual memory의 내용이 page 단위로 *noncontiguous*하게 저장됨
 
 > page Table
 
+- main memory에 상주
+- Page-table base register(PTBR)가 page table을 가리킴
+- Page-table length register(PTLR)가 테이블 크기를 보관
+- 모든 메모리 접근 연산에는 2번의 memory access필요
+- page talbe 접근 1번, 실제 data/instruction 접근 1번
+- 속도 향상을 위해 TLB라 불리는 고속의 lookup hardware cache 사용
+  ![paging with TLB](https://user-images.githubusercontent.com/76620786/156271845-c82b901d-8631-496f-a71a-92e8f35d4e04.png)
+
+### Two-Level Page Table
+
+속도는 줄어들지 않지만 pagetable을 위한 공간이 줄어듬  
+페이지 테이블 자체를 페이지화 시켜서 하드 디스크에 저장해두고 있다가 필요시 메모리로 로드하는 방식  
+왜 쓰는가? 사용되지 않는 주소 공간에 대한 outer page table의 엔트리 값은 NULL
+
+### Multilevel Paging and Performance
+
+Address space가 더 커지면 다단계 페이지 테이블 필요
+logical address의 physical adress 변환에 더 많은 메모리 접근 필요
+TLB를 통해 메모리 접근 시간을 줄일 수 있음
+
+### Inverted Page Table
+
+page table이 매우 큰 이유
+
+- 모든 process 별로 그 logical address에 대응하는 모든 page에 대해 page table entry가 존재
+- 대응하는 page가 메모리에 있든 아니든 간에 page table 에는 entry로 존재
+
+Inverted page table
+
+- page frame 하나당 page table에 하나의 entry를 둔 것
+- 각 page table entry는 각각의 물리적 메로리의 page frame이 담고 있는 내용 표시
+- 단점 : 테이블 전체를 탑색해야함 => 조치 : associative register 사용 (expensive)
+
+### Shared page
+
+read-only로 하여 프로세스 간에 하나의 code만 메모리에 올림  
+shared code는 모든 프로세스의 logical address space에서 동일한 위치에 있어야함
+
+### Segmentation
+
 ---
 
 ## 용어 정리
