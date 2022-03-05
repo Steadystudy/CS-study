@@ -591,8 +591,8 @@ page table이 매우 큰 이유
 Inverted page table
 
 - page frame 하나당 page table에 하나의 entry를 둔 것
-- 각 page table entry는 각각의 물리적 메로리의 page frame이 담고 있는 내용 표시
-- 단점 : 테이블 전체를 탑색해야함 => 조치 : associative register 사용 (expensive)
+- 각 page table entry는 각각의 물리적 메모리의 page frame이 담고 있는 내용 표시
+- 단점 : 테이블 전체를 탐색해야함 => 조치 : associative register 사용 (expensive)
 
 ### Shared page
 
@@ -600,6 +600,37 @@ read-only로 하여 프로세스 간에 하나의 code만 메모리에 올림
 shared code는 모든 프로세스의 logical address space에서 동일한 위치에 있어야함
 
 ### Segmentation
+
+프로그램은 의미 단위인 여러 개의 segment로 구성
+
+![Segmentation](https://user-images.githubusercontent.com/76620786/156862224-f236b3eb-dd06-4b48-9a1f-6fa7f90da030.PNG)
+
+logical address는 두가지로 구성 (<segment-number, offset>)  
+Segment-table base register(STBR) : 물리적 메모리에서의 segment table의 위치  
+Segment-table length register(STLR) : 프로그램이 사용하는 sement의 수
+
+Protection
+
+- 각 세그먼트 별로 protection bit가 있음
+
+Sharing
+
+- segment는 의미 단위이기 때문에 공유와 보안에 있어 paging보다 훨씬 효과적이다
+
+Allocation
+
+- segment의 길이가 동일하지 않으므로 가변분할 방식에서와 동일한 문제점들이 발생
+
+### Segmentation with Paging
+
+pure segmentation과의 차이점 : segment-table entry가 segment의 base address를 가지고 있는 것이 아니라 segment를 구성하는 page table의 base address를 가지고 있음  
+![seg with paging](https://user-images.githubusercontent.com/76620786/156864425-600c1cb0-fed0-48d2-a319-81bbabfd6c14.PNG)
+
+### Memory management 정리
+
+CPU가 논리적 주소를 주면 물리적 메모리 주소로 변환을 시켜 메모리 주소를 참조하는 것
+주소변환에 있어서 운영체제의 역할 ? 없음. 다 하드웨어가 해줘야 함. MMU를 통해
+운영체제가 끼어들어야할 때? I/O장치에 접근할 때
 
 ---
 
@@ -613,3 +644,4 @@ shared code는 모든 프로세스의 logical address space에서 동일한 위�
 > preemptive : 강제로 빼앗음  
 > nonpreemptive : 강제로 뺴앗지 않고 자진 반납  
 > Starvation : indefinite blocking. 프로세스가 suspend된 이후에 해당하는 큐에서 빠져나갈 수 없는 현상.
+> TLB(Translation Lookaside Buffers) : Address Translation 과정에서 VPN을 PFN으로 변환하려면 Page Table에 접근하여야 한다. 이 과정을 더 빠르게 하기 위해 자주 쓰이는 Translation들을 MMU에 저장하여 사용하는데 이렇게 저장한 Cache를 뜻함.
