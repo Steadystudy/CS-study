@@ -632,6 +632,38 @@ CPU가 논리적 주소를 주면 물리적 메모리 주소로 변환을 시켜
 주소변환에 있어서 운영체제의 역할 ? 없음. 다 하드웨어가 해줘야 함. MMU를 통해
 운영체제가 끼어들어야할 때? I/O장치에 접근할 때
 
+## Virtual Memory
+
+### Demand Paging
+
+실제로 필요할 때 page를 메모리에 올리는 것
+
+- I/O 양의 감소
+- Memory 사용량 감소
+- 빠른 응답 시간
+- 더 많은 사용자 수용
+
+Valid/ Invalid bit의 사용
+
+- invalid의 의미 : 사용되지 않는 주소 영역인 경우, 페이지가 물리적 메모리에 없는 경우
+- 처음에는 모든 page entry가 invalid로 초기화
+- address translation 시에 invalid bit이 set되어 있으면 => "_page fault_"
+
+### Page Fault
+
+invalid page를 접근하면 MMU가 trap을 발생시킴 (page fault trap)  
+Kernel mode로 들어가서 page fault handler가 invoke됨  
+page fault 처리 순서
+
+1. Invalid reference ? => abort process
+2. Get an empty page frame (없으면 replace)
+3. 해당 페이지를 disk에서 memory로 읽어온다.
+   1. Disk I/O가 끝나기까지 이 프로세스는 CPU를 preempt 당함 (block)
+   2. Disk read가 끝나면 page tables entry 기록, valid/invalid bit = "valid"
+   3. ready queue에 process를 insert -> dispatch later
+4. 이 프로세스가 CPU를 잡고 다시 running
+5. 아까 중단되었던 instruction을 재개
+
 ---
 
 ## 용어 정리
