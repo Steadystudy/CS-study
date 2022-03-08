@@ -664,6 +664,34 @@ page fault 처리 순서
 4. 이 프로세스가 CPU를 잡고 다시 running
 5. 아까 중단되었던 instruction을 재개
 
+### Various Caching Environment
+
+Caching 기법 : 한정된 빠른 공간(=캐쉬)에 요청된 데이터를 저장해 두었다가 후속 요청시 캐쉬로부터 직접 서비스하는 방식  
+캐쉬 운영의 시간 제약
+
+- 교체 알고리즘에서 삭제할 항목을 결정하는 일에 지나치게 많은 시간이 걸리는 경우 실제 시스템에서 사용할 수 없음
+- Paging system인 경우 : page fault인 경우에만 OS가 관여, 페이지가 이미 메모리에 존재하는 경우 참조시각 등의 정보를 OS가 알 수 없음 => LRU, LFU 사용불가 그래서 _Clock Algorithm_ 사용
+
+### Page Frame의 Allocation
+
+메모리 참조 명령어 수행시 명령어, 데이터 등 여러 페이지 동시 참조 => 명령어 수행을 위해 최소한 할당되어야 하는 frame의 수가 있음  
+Loop를 구성하는 page들은 한꺼번에 allocate 되는 것이 유리함 => 최소한의 allocation이 없으면 매 loop마다 page fault
+
+### Thrashing
+
+- 프로세스의 원활한 수행에 필요한 최소한의 page frame의 수를 할당 받지 못한 경우 발생
+- Page fault rate 매우 높아짐 => CPU utilization 낮아짐 => OS는 MPD를 높여야 한다고 판단 => 또 다른 프로세스가 시스템에 추가됨 => 프로세스 당 할당된 frame의 수가 더욱 감소 => 프로세스는 page의 swap in/out으로 매우 바쁨 => 대부분의 시간에 CPU는 한가함 => low throught put
+
+### Page Size의 결정
+
+Page size를 감소시키면
+
+- 페이지 수 증가
+- 페이지 테이블 크기 증가
+- internal fragmentation 감소
+- disk transfer의 효율성 감소
+- 필요한 정보만 메모리에 올라와 메모리 이용이 효율적
+
 ---
 
 ## 용어 정리
@@ -675,5 +703,6 @@ page fault 처리 순서
 > Caching: copying information into faster storage system  
 > preemptive : 강제로 빼앗음  
 > nonpreemptive : 강제로 뺴앗지 않고 자진 반납  
-> Starvation : indefinite blocking. 프로세스가 suspend된 이후에 해당하는 큐에서 빠져나갈 수 없는 현상.
-> TLB(Translation Lookaside Buffers) : Address Translation 과정에서 VPN을 PFN으로 변환하려면 Page Table에 접근하여야 한다. 이 과정을 더 빠르게 하기 위해 자주 쓰이는 Translation들을 MMU에 저장하여 사용하는데 이렇게 저장한 Cache를 뜻함.
+> Starvation : indefinite blocking. 프로세스가 suspend된 이후에 해당하는 큐에서 빠져나갈 수 없는 현상.  
+> TLB(Translation Lookaside Buffers) : Address Translation 과정에서 VPN을 PFN으로 변환하려면 Page Table에 접근하여야 한다. 이 과정을 더 빠르게 하기 위해 자주 쓰이는 Translation들을 MMU에 저장하여 사용하는데 이렇게 저장한 Cache를 뜻함.  
+> LRU(Least Recently Used Algorithm), LFU(Least Frequently Used Algorithm)
