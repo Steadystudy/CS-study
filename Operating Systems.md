@@ -692,6 +692,51 @@ Page size를 감소시키면
 - disk transfer의 효율성 감소
 - 필요한 정보만 메모리에 올라와 메모리 이용이 효율적
 
+## File and File System
+File : "A named collection of related information"  
+File attribute (metadata)
+ - 파일 자체의 내용이 아니라 파일을 관리하기 위한 각종 정보들
+  + 파일 이름, 유형. 저장된 위치, 파일 사이즈 등
+
+File system
+- 운영체제에서 파일을 관리하는 부분
+- 파일 및 파일의 메타데이터, 디렉토리 정보 등을 관리
+- 파일의 저장 방법 결정
+- 파일 보호 등
+
+### Directory and Logical Disk
+Directory
+- 파일의 메타데이터 중 일부를 보관하고 있는 일종의 특별한 파일
+- 그 디렉토리에 속한 파일 이름 및 파일 attribute들
+
+Partition (=Logical Disk)
+- 하나의 (물리적) 디스크 안에 여러 파티션을 두는 게 일반적
+- 여러 개의 물리적인 디스크를 하나의 파티션으로 구성하기도 함
+- (물리적) 디스크를 파티션으로 구성한 뒤 각각의 파티션에 file system을 깔거나 swapping 등 다른 용도로 사용
+
+### open()
+
+![open](https://user-images.githubusercontent.com/76620786/159261607-b2de7d86-0d54-4df4-b4dd-6cc1e986ae96.png)  
+
+### File Protection
+Access Control 방법
+1. Access control Matrix
+2. *Grouping*
+  - 전체 user를 owner, group, public의 세 그룹으로 구분
+  - 각 파일에 대해 세 그룹의 접근 권환을 3비트 씩으로 표시  
+  ![grouping 접근 권한](https://user-images.githubusercontent.com/76620786/159262363-5ec07a6e-b00d-45de-b194-b4828d412f6d.png)  
+  - ex. UNIX
+3. Password
+
+### Access Methods
+1. 순차 접근
+- 카세트 테이프를 사용하는 방식처럼 접근 (a에서 c로 가려면 b를 거쳐야함)
+- 읽거나 쓰면 offset은 자동적으로 증가
+
+2. 직접 접근
+- LP 레코드 판과 같이 접근하도록 함
+- 파일을 구성하는 레코드를 임의의 순서로 접근할 수 있음
+
 ---
 
 ## 용어 정리
