@@ -693,49 +693,199 @@ Page size를 감소시키면
 - 필요한 정보만 메모리에 올라와 메모리 이용이 효율적
 
 ## File and File System
+
 File : "A named collection of related information"  
 File attribute (metadata)
- - 파일 자체의 내용이 아니라 파일을 관리하기 위한 각종 정보들
-  + 파일 이름, 유형. 저장된 위치, 파일 사이즈 등
+
+- 파일 자체의 내용이 아니라 파일을 관리하기 위한 각종 정보들
+
+* 파일 이름, 유형. 저장된 위치, 파일 사이즈 등
 
 File system
+
 - 운영체제에서 파일을 관리하는 부분
 - 파일 및 파일의 메타데이터, 디렉토리 정보 등을 관리
 - 파일의 저장 방법 결정
 - 파일 보호 등
 
 ### Directory and Logical Disk
+
 Directory
+
 - 파일의 메타데이터 중 일부를 보관하고 있는 일종의 특별한 파일
 - 그 디렉토리에 속한 파일 이름 및 파일 attribute들
 
 Partition (=Logical Disk)
+
 - 하나의 (물리적) 디스크 안에 여러 파티션을 두는 게 일반적
 - 여러 개의 물리적인 디스크를 하나의 파티션으로 구성하기도 함
 - (물리적) 디스크를 파티션으로 구성한 뒤 각각의 파티션에 file system을 깔거나 swapping 등 다른 용도로 사용
 
 ### open()
 
-![open](https://user-images.githubusercontent.com/76620786/159261607-b2de7d86-0d54-4df4-b4dd-6cc1e986ae96.png)  
+![open](https://user-images.githubusercontent.com/76620786/159261607-b2de7d86-0d54-4df4-b4dd-6cc1e986ae96.png)
 
 ### File Protection
+
 Access Control 방법
+
 1. Access control Matrix
-2. *Grouping*
-  - 전체 user를 owner, group, public의 세 그룹으로 구분
-  - 각 파일에 대해 세 그룹의 접근 권환을 3비트 씩으로 표시  
-  ![grouping 접근 권한](https://user-images.githubusercontent.com/76620786/159262363-5ec07a6e-b00d-45de-b194-b4828d412f6d.png)  
-  - ex. UNIX
+2. _Grouping_
+
+- 전체 user를 owner, group, public의 세 그룹으로 구분
+- 각 파일에 대해 세 그룹의 접근 권환을 3비트 씩으로 표시  
+  ![grouping 접근 권한](https://user-images.githubusercontent.com/76620786/159262363-5ec07a6e-b00d-45de-b194-b4828d412f6d.png)
+- ex. UNIX
+
 3. Password
 
 ### Access Methods
+
 1. 순차 접근
+
 - 카세트 테이프를 사용하는 방식처럼 접근 (a에서 c로 가려면 b를 거쳐야함)
 - 읽거나 쓰면 offset은 자동적으로 증가
 
 2. 직접 접근
+
 - LP 레코드 판과 같이 접근하도록 함
 - 파일을 구성하는 레코드를 임의의 순서로 접근할 수 있음
+
+### Contiguous Allocation
+
+- 장점
+
+  - Fast I/O
+    - 한 번의 seek 로 많은 바이트 transfer
+    - Realtime file용으로, 또는 이미 run 중이던 process의 swapping 용
+  - Direct access 가능
+
+- 단점
+  - File grow가 어려움
+    - file 생성시 얼마나 큰 hole을 배당할 것인가?
+  - external Fragmentation
+
+![스크린샷 2022-04-16 오후 1 46 14](https://user-images.githubusercontent.com/76620786/163661862-1aa563cf-efe6-454e-b62b-1b643cc438c2.png)
+
+### Linked Allocation
+
+하드디스크임에도 불구하고 Direct access 불가능 왜?  
+directory에는 처음과 끝이 나와있는데 중간위치를 알려면 모든 데이터를 다 접근해야지만 알 수 있다. 그래서 순차접근만 가능
+
+- 장점
+
+  - external Fragmentation 발생 안함
+
+- 단점
+
+  - No random access
+  - Reliability 문제
+    - 한 sector가 고장나 pointer가 유실되면 많은 부분을 잃음
+  - Pointer를 위한 공간이 block의 일부가 되어 공간 효율성을 떨어뜨림
+    - 512 bytes/sector, 4bytes/pointer => pointer가 4바이트를 잡아 먹음
+
+- 변형
+  - _File-allocation table_ (FAT) 파일 시스템
+    - 포인터를 별도의 위치에 보관하여 reliability와 공간효율성 문제 해결
+
+![스크린샷 2022-04-16 오후 1 45 56](https://user-images.githubusercontent.com/76620786/163661867-d508830d-7f6c-413a-8a09-e661564e1e6d.png)
+
+### Indexed Allocation
+
+위치 정보를 하나의 인덱스에 내용으로 적어놓음
+
+- 장점
+
+  - Direct Access 가능
+  - External fragmentation이 발생하지 않음
+
+- 단점
+  - small file의 경우 공간 낭비 (실제로 많은 file들이 small)
+  - Too Large file의 경우 하나의 block으로 index를 저장하기에 부족
+    - 해결 방안
+      - linked scheme (양이 많으면 마지막에 또 다른 인덱스를 연결해줌)
+      - multi-level index
+
+![스크린샷 2022-04-16 오후 1 46 22](https://user-images.githubusercontent.com/76620786/163661847-f267522a-ca42-41e4-80fa-d3b2bd762f0d.png)
+
+### UNIX 파일 시스템의 구조
+
+![스크린샷 2022-04-16 오후 1 45 29](https://user-images.githubusercontent.com/76620786/163661883-954ebbea-8f01-4353-ab7e-11414e8a3702.png)
+
+### FAT File System
+
+중요한 정보를 담고 있어서 두 카피 이상 들고있다.
+
+![스크린샷 2022-04-16 오후 7 28 09](https://user-images.githubusercontent.com/76620786/163671519-a50c94e4-657b-4a20-ae37-1f8878aa9360.png)
+
+\*현재 사용되고 있는 File System은 어떨까?
+
+### Free-Space Management
+
+- Linked-list
+  - 모든 free block들을 링크로 연결
+  - 연속적인 가용공간을 찾는 것은 쉽지가 않다
+  - 공간의 낭비가 없다
+- Grouping
+  - linked list 방법의 변형
+  - 첫번째 free block이 n개의 pointer를 가짐
+    - n-1 pointer는 free data block을 가리킴
+    - 마지막 pointer가 가리키는 block은 또 다시 n pointer를 가짐
+- Counting
+  - 프로그램들이 종종 여러 개의 연속적인 block을 할당하고 반납한다는 성질에 착안
+  - 빈 블럭의 위치를 가리키고 몇 개가 비어있는지 알려줌
+
+### Directory Implementation
+
+- Linear list
+  - <file name, file의 metadat>의 list
+  - 디렉토리 내에 파일이 있는지 찾기 위해서 linear search가 필요
+  - 구현이 간단하지만 시간이 많이 필요
+- Hash Table
+  - Hash table은 file name을 이 파일의 linear list의 위치로 바꾸어줌
+  - search time을 없앰
+  - Collision 발생 가능
+- File의 metadata의 보관 위치
+  - 디렉토리 내에 직접 보관
+  - 디렉토리에는 포인터를 두고 다른 곳에 보관 (ex. inode, FAT)
+
+### VFS, NFS
+
+Virtual File System
+
+- 서로 다른 다양한 file system에 대해 동일한 시스템 콜 인터페이스를 통해 접근할 수 있게 OS의 layer
+
+Network File System
+
+- 분산 시스템에서는 네트워크를 통해 파일이 공유될 수 있음
+- NFS는 분산 환경에서의 대표적인 파일 공유 방법
+
+![스크린샷 2022-04-16 오후 7 47 04](https://user-images.githubusercontent.com/76620786/163672049-704114fd-d23b-43cb-a835-30bb9c620139.png)
+
+### Page cache and Buffer Cache
+
+- Page Cache
+
+  - Virtual memory의 pagin system에서 사용하는 page frame을 caching의 관점에서 설명하는 용어
+  - 캐쉬 히트가 나면 즉 이미 메모리에 존재하는 데이터에 대해서 하드 웨어적인 주소변환만 하기 때문에 정확한 접근 시간이나 이런 정보를 알 수 없어서 클락 알고리즘 사용
+
+- Buffer Cache
+
+  - 파일 시스템을 통한 I/O 연산은 메모리의 특정 영역인 buffer cache 사용
+  - 모든 프로세스가 공용으로 사용
+  - Replacement algorithm 필요
+  - 파일을 접근할 때 시스템 콜을 해야하기 때문에 파일에 대한 요청이 언제 일어나는지 알 수 있음. 캐쉬 히트가 나든 미스가 나든 알 수 있음.
+
+- Unified Buffer Cache
+  - 최근의 OS에서는 기존의 buffer cache가 page cache에 통합된
+  - 버퍼 캐쉬도 페이지 단위로 관리를 한다.고 볼 수 있음
+  - ![스크린샷 2022-04-16 오후 7 56 59](https://user-images.githubusercontent.com/76620786/163672355-0381f752-4d6f-4396-98c0-78414e230014.png)
+
+* 파일에 접근하는 루트는?  
+  그 파일을 오픈한 다음 read system or write system을 통해 한다.
+  그러나 Memory-Mapped I/O는 다르다.
+  파일의 일부를 virtual memory 영역에 mapping을 시켜놓고 쓰는 것.  
+  매핑 시킨 영역에 대한 메모리 접근 연산은 파일의 입출력을 수행하게 한다.
 
 ---
 
