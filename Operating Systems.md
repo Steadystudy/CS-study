@@ -869,6 +869,8 @@ Network File System
   - Virtual memory의 pagin system에서 사용하는 page frame을 caching의 관점에서 설명하는 용어
   - 캐쉬 히트가 나면 즉 이미 메모리에 존재하는 데이터에 대해서 하드 웨어적인 주소변환만 하기 때문에 정확한 접근 시간이나 이런 정보를 알 수 없어서 클락 알고리즘 사용
 
+  - _정리하자면 : 프로세스의 주소공간을 구성하는 페이지가 swap area에 내려가 있는가 또는 페이지 캐쉬에 올라와 있는가 그 얘기를 하는 것이다_
+
 - Buffer Cache
 
   - 파일 시스템을 통한 I/O 연산은 메모리의 특정 영역인 buffer cache 사용
@@ -876,16 +878,23 @@ Network File System
   - Replacement algorithm 필요
   - 파일을 접근할 때 시스템 콜을 해야하기 때문에 파일에 대한 요청이 언제 일어나는지 알 수 있음. 캐쉬 히트가 나든 미스가 나든 알 수 있음.
 
+  - _정리하자면 : 파일 데이터가 파일 시스템 storage에 저장되어 있느냐 아니면 운영체제의 buffer cache에 올라와 있느냐 그걸 가지고 처리하는 것_
+
 - Unified Buffer Cache
   - 최근의 OS에서는 기존의 buffer cache가 page cache에 통합된
-  - 버퍼 캐쉬도 페이지 단위로 관리를 한다.고 볼 수 있음
+  - 버퍼 캐쉬도 페이지 단위(4kb)로 관리를 한다.고 볼 수 있음
+  - 미리 공간을 구분하지 않고 그때 필요할 때 할당해서 사용하는 것
   - ![스크린샷 2022-04-16 오후 7 56 59](https://user-images.githubusercontent.com/76620786/163672355-0381f752-4d6f-4396-98c0-78414e230014.png)
 
 * 파일에 접근하는 루트는?  
   그 파일을 오픈한 다음 read system or write system을 통해 한다.
   그러나 Memory-Mapped I/O는 다르다.
-  파일의 일부를 virtual memory 영역에 mapping을 시켜놓고 쓰는 것.  
-  매핑 시킨 영역에 대한 메모리 접근 연산은 파일의 입출력을 수행하게 한다.
+
+  - 파일의 일부를 virtual memory 영역에 mapping을 시켜놓고 쓰는 것.  
+    매핑 시킨 영역에 대한 메모리 접근 연산은 파일의 입출력을 수행하게 한다.  
+    커널을 사용하지 않고 운영체제를 호출하지 않고 자신의 메모리 접근해서 사용할 수 있기 때문에 MM을 사용한다.  
+    주의할 점은 일관성 문제가 있다.
+    ![스크린샷 2022-04-17 오후 4 19 28](https://user-images.githubusercontent.com/76620786/163704856-99e52aef-66ff-43b2-b9ee-39a78acc40b8.png)
 
 ---
 
