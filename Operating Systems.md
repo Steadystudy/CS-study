@@ -896,6 +896,49 @@ Network File System
     주의할 점은 일관성 문제가 있다.
     ![스크린샷 2022-04-17 오후 4 19 28](https://user-images.githubusercontent.com/76620786/163704856-99e52aef-66ff-43b2-b9ee-39a78acc40b8.png)
 
+### Disk Scheduling
+
+seek time을 최소화 하는 것이 목표
+
+Access Time의 구성
+
+- Seek time : 헤드를 해당 실린더로 움직이는데 걸리는 시간
+- Rotational latency : 헤드가 원하는 섹터에 도달하기까지 걸리는 회전지연시간
+- Transfer time : 실제 데이터의 전송시간
+
+scheduling 알고리즘
+
+- SSTF(shortest seek time first), FCFS(First Come First Service), SCAN(엘리베이터 알고리즘과 똑같음),C-SCAN(SCAN보다 균일한 시간)
+
+### Disk Structure
+
+logical block
+
+- 디스크의 외부에서 보는 디스크의 단위 정보 저장 공간들
+- 주소를 가진 1차원 배열처럼 취급
+- 정보를 전송하는 최소 단위
+  Sector
+- Logical block과 물리적인 디스크에 매핑되어 있음
+- Sector 0는 최외곽 실린더의 첫 트랙에 있는 첫 번째 섹터이다.
+
+### Disk Management
+
+physical formatting
+
+- 디스크를 컨트롤러가 읽고 쓸 수 있도록 섹터들을 나누는 과정
+- 각 섹터는 header + 실제 data + trailer로 구성
+- header와 trailer는 sector number, ECC 등의 정보가 저장되며 controller가 직접 접근 및 운영
+  Partitioning
+- 디스크를 하나 이상의 실린더 그룹으로 나누는 과정
+- OS는 이것을 독립적 disk로 취급
+  Logical formatting
+- 파일 시스템을 만드는 것
+- FAT, inode, free space 등의 구조 포함
+  Booting
+- ROM에 있는 "small bootstrap loader"의 실행
+- sector 0을 load하여 실행
+- OS를 디스크에서 load하여 실행
+
 ---
 
 ## 용어 정리
