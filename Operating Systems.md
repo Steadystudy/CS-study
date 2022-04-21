@@ -939,6 +939,36 @@ physical formatting
 - sector 0을 load하여 실행
 - OS를 디스크에서 load하여 실행
 
+### Swap-Space Management
+
+Disk를 사용하는 이유
+
+- memory의 volatile한(휘발성) 특성 -> file system
+- 프로그램 실행을 위한 memory 공간 부족 -> swap space(area)
+
+Swap-space
+
+- Virtual memory system에서는 디스크를 memory의 연장 공간으로 사용
+- 파일 시스템 내부에 둘 수도 있으나 별도 partition 사용이 일반적
+  - 공간 효율성보다는 속도 효율성이 우선
+  - 일반 파일보다 훨씬 짧은 시간만 존재하고 자주 참조됨
+  - 따라서, block의 크기 및 저장 방식이 일반 파일시스템과 다름
+
+![스크린샷 2022-04-21 오후 5 34 20](https://user-images.githubusercontent.com/76620786/164414774-8eb69bab-23d9-4609-b569-ccde7bd85c68.png)
+
+### RAID
+
+Redundant Array of Independent Disks - 여러 개의 디스크를 묶어 사용  
+사용 목적
+
+- 디스크 처리 속도 향상
+  - 여러 디스크에 blockd의 내용을 분산 저장
+  - 병렬적으로 읽어 옴 (interleaving, striping)
+- 신뢰성 향상
+  - 동일 정보를 여러 디스크에 중복 저장
+  - 하나의 디스크가 고장시 다른 디스크에서 읽어옴 (Mirroring, shadowing)
+  - 단순한 중복 저장이 아니라 일부 디스크에 parity를 저장하여 공간의 효율성을 높일 수 있다.
+
 ---
 
 ## 용어 정리
